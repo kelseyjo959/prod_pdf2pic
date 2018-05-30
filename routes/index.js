@@ -25,8 +25,8 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('pdf');
 
 router.post('/', upload, function(req, res, next) {
-  // console.log(req.file);
-  // console.log(req.file.originalname);
+  console.log(req.file);
+  console.log(req.file.originalname);
   var file_name = req.file.originalname;
   
   var converter = new PDF2Pic({
