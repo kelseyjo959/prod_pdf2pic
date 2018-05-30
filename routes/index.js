@@ -1,7 +1,7 @@
 var express = require('express');
 var gm = require('gm');
 var PDF2Pic = require('pdf2pic').default
-var multer = require('multer');
+var multer = require('multer'); // middleware to handle file uploads in Node
 var router = express.Router();
 
 /* GET home page. */
