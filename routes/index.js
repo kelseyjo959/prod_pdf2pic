@@ -2,6 +2,8 @@ var express = require('express');
 var gm = require('gm');
 var PDF2Pic = require('pdf2pic').default
 var multer = require('multer'); // middleware to handle file uploads in Node
+var path = require('path');
+var fs = require('fs');
 var router = express.Router();
 
 /* GET home page. */
@@ -25,14 +27,20 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage }).single('pdf');
 
 router.post('/', upload, function(req, res, next) {
-  // console.log(req.file);
+  console.log(req.file);
   // console.log(req.file.originalname);
   var file_name = req.file.originalname;
-  
+  var clean_file_name = file_name.replace(/.pdf/, "");
+  convert_pdf(file_name)
+  res.render('uploaded-png', { image: clean_file_name + "_1.png" });
+  // res.sendStatus(200);
+})
+
+function convert_pdf(file_name) {
   var converter = new PDF2Pic({
     density: 100, // output pixels per inch
-    savename: file_name,  // output file name, will add incrementing numbers for multiple pages, starting with 1
-    savedir: './public/pdf/converted_pdf', //output file location
+    savename: file_name.replace(/.pdf/, ""),  // output file name, will add incrementing numbers for multiple pages, starting with 1
+    savedir: './public/images', //output file location
     format: 'png',  // output file format
     size: 800 // output size in pixels
   })
@@ -41,7 +49,8 @@ router.post('/', upload, function(req, res, next) {
     .then(resolve => {
       console.log('pdf converted');
   })
-})
+}
+
 
 
 
